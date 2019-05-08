@@ -2,7 +2,7 @@ package com.kodgemisi.blog.multilanguage;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
-public enum Languages {
+enum Languages {
 
 	TR, EN, FR;
 

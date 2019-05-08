@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demodb
+    username: demouser
+    password: demo
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true # see https://github.com/pgjdbc/pgjdbc/issues/1102#issuecomment-398036270
+
+logging:
+  level:
+    org.hibernate.type: trace # to show SQL value bindings

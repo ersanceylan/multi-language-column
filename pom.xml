@@ -9,13 +9,33 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.kodgemisi.blog</groupId>
-	<artifactId>multilanguage</artifactId>
+	<artifactId>multi-language-text-fields</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>multilanguage</name>
 	<description>Multilanguage Support for Column with Postgres Database</description>
 
+    <organization>
+        <name>Kod Gemisi</name>
+        <url>https://kodgemisi.com/</url>
+    </organization>
+
+    <scm>
+        <url>https://github.com/ersanceylan/multi-language-column</url>
+    </scm>
+
 	<properties>
-		<java.version>11</java.version>
+        <java.version>11</java.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <hibernate-types-52.version>2.4.3</hibernate-types-52.version>
+
+        <!-- https://github.com/asciidoctor/asciidoctor-maven-plugin#add-version-and-build-date-to-the-header -->
+        <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
 	</properties>
 
 	<dependencies>
@@ -39,13 +59,12 @@
 		<dependency>
 			<groupId>com.vladmihalcea</groupId>
 			<artifactId>hibernate-types-52</artifactId>
-			<version>2.4.3</version>
+			<version>${hibernate-types-52.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -65,6 +84,39 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>1.5.8</version>
+                <executions>
+                    <execution>
+                        <id>output-html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <backend>html5</backend>
+                    <sourceDirectory>${basedir}</sourceDirectory>
+                    <sourceDocumentName>README.adoc</sourceDocumentName>
+                    <outputDirectory>${basedir}/docs</outputDirectory>
+                    <outputFile>index.html</outputFile>
+                    <resources>
+                        <resource>
+                            <directory>images</directory>
+                            <targetPath>images</targetPath>
+                        </resource>
+                    </resources>
+
+                    <attributes>
+                        <revdate>${maven.build.timestamp}</revdate>
+                        <revremark>Kod Gemisi</revremark>
+                        <scmurl>${project.scm.url}</scmurl>
+                    </attributes>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
