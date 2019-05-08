@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Multi Language Example</title>
+
+    <style>
+        .multi-language.active-lang {
+            display: block;
+        }
+        .multi-language {
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>Product Form</h2>
+            <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Products</span>
+                    <span class="badge badge-secondary badge-pill" th:text="${#lists.size(products)}"></span>
+                </h4>
+                <ul class="list-group mb-3">
+                    <li th:each="product : ${products}" th:object="${product}"
+                            class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0" th:text="*{name}">Product name</h6>
+                            <small class="text-muted" th:text="*{description}">Brief description</small>
+                        </div>
+                        <span class="text-muted">$12</span>
+                    </li>
+                </ul>
+
+                <form class="card p-2">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="changeDefaultLanguage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Change Default Language ([[${defaultLanguage}]])
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a th:each="lang : ${languages}" th:text="${lang}" th:data-default-lang="${lang}" class="dropdown-item language-item" href="javascript:void(0)">Action</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8 order-md-1">
+                <h4 class="mb-3"></h4>
+                <form method="post" th:object="${product}">
+
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <div class="input-group" data-multi-language-for="name">
+                            <div class="input-group-prepend">
+                                <select class="form-control language-choice" data-multi-language-for="name">
+                                    <option class="name-field-language-option" th:each="lang : ${languages}" th:value="${lang}" th:selected="(${lang.name()} == ${defaultLanguage})" th:text="${lang}"></option>
+                                </select>
+                            </div>
+                            <th:block th:each="lang : ${languages}">
+                                <input class="form-control multi-language" th:data-lang="${lang}" th:classappend="(${lang.name()} == ${defaultLanguage}) ? 'active-lang'"
+                                       th:field="*{name.texts[__${lang}__]}"
+                                       type="text" aria-label="Text input with dropdown button">
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Description</label>
+                        <div class="input-group" data-multi-language-for="description">
+                            <div class="input-group-prepend">
+                                <select class="form-control language-choice" data-multi-language-for="description">
+                                    <option class="description-field-language-option" th:each="lang : ${languages}" th:value="${lang}" th:selected="(${lang.name()} == ${defaultLanguage})" th:text="${lang}"></option>
+                                </select>
+                            </div>
+                            <th:block th:each="lang : ${languages}">
+                                <input class="form-control multi-language" th:data-lang="${lang}" th:classappend="(${lang.name()} == ${defaultLanguage}) ? 'active-lang'"
+                                       th:field="*{description.texts[__${lang}__]}"
+                                       type="text" aria-label="Text input with dropdown button">
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Create New Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+
+    /**
+     *
+     * https://www.w3schools.com/js/js_cookies.asp
+     *
+     */
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+</script>
+<script>
+    $(function () {
+        $(".language-choice").on("change", function () {
+            const multiLanguageFor = $(this).data("multi-language-for");
+            const selectedVal = $(this).val();
+            $(".input-group[data-multi-language-for="+multiLanguageFor+"] .multi-language.active-lang").removeClass("active-lang");
+            $(".input-group[data-multi-language-for="+multiLanguageFor+"] .multi-language[data-lang="+selectedVal+"]").addClass("active-lang");
+        });
+
+        $(".language-item").on("click", function () {
+            const selectedLang = $(this).data("default-lang");
+            setCookie("lang", selectedLang, 365);
+            console.log("default language is set to ", selectedLang);
+        })
+    })
+</script>
+</body>
+</html>
