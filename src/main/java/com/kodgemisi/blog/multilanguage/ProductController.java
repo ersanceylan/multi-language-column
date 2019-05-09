@@ -1,21 +1,26 @@
 package com.kodgemisi.blog.multilanguage;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@Slf4j
+/**
+ * Created on May, 2019
+ *
+ * @author ersan
+ */
 @Controller
+@RequestMapping("/")
 @RequiredArgsConstructor
-class DemoController {
+class ProductController {
 
 	private final ProductRepository productRepository;
 
 	@GetMapping
-	public String getProducts(Model model) {
+	String getProducts(Model model) {
 		model.addAttribute("products", productRepository.findAll());
 		model.addAttribute("product", new Product());
 		model.addAttribute("defaultLanguage", Languages.getDefaultLanguage());
@@ -24,8 +29,9 @@ class DemoController {
 	}
 
 	@PostMapping
-	public String createProduct(Product product) {
+	String createProduct(Product product) {
 		productRepository.save(product);
 		return "redirect:/";
 	}
+
 }

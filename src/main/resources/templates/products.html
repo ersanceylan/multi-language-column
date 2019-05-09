@@ -24,12 +24,28 @@
 
     <div class="container">
         <div class="py-5 text-center">
-            <h2>Product Form</h2>
-            <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+            <h2>Product with multi language texts example</h2>
         </div>
 
         <div class="row">
             <div class="col-md-4 order-md-2 mb-4">
+
+
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Language</span>
+                </h4>
+                <form class="card p-2 mb-3">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="changeDefaultLanguage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            [[#{change_default_language}]] ([[${defaultLanguage}]])
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a th:each="lang : ${languages}" th:text="${lang}" th:data-default-lang="${lang}" class="dropdown-item language-item" href="javascript:void(0)">Action</a>
+                        </div>
+                    </div>
+                </form>
+
+
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Products</span>
                     <span class="badge badge-secondary badge-pill" th:text="${#lists.size(products)}"></span>
@@ -41,27 +57,20 @@
                             <h6 class="my-0" th:text="*{name}">Product name</h6>
                             <small class="text-muted" th:text="*{description}">Brief description</small>
                         </div>
-                        <span class="text-muted">$12</span>
+                        <span class="text-muted">$[[*{price}]]</span>
                     </li>
                 </ul>
 
-                <form class="card p-2">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="changeDefaultLanguage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Change Default Language ([[${defaultLanguage}]])
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a th:each="lang : ${languages}" th:text="${lang}" th:data-default-lang="${lang}" class="dropdown-item language-item" href="javascript:void(0)">Action</a>
-                        </div>
-                    </div>
-                </form>
+
             </div>
             <div class="col-md-8 order-md-1">
-                <h4 class="mb-3"></h4>
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Product form</span>
+                </h4>
                 <form method="post" th:object="${product}">
 
                     <div class="mb-3">
-                        <label>Name</label>
+                        <label>[[#{product.name}]]</label>
                         <div class="input-group" data-multi-language-for="name">
                             <div class="input-group-prepend">
                                 <select class="form-control language-choice" data-multi-language-for="name">
@@ -77,7 +86,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label>Description</label>
+                        <label>[[#{product.description}]]</label>
                         <div class="input-group" data-multi-language-for="description">
                             <div class="input-group-prepend">
                                 <select class="form-control language-choice" data-multi-language-for="description">
@@ -89,6 +98,16 @@
                                        th:field="*{description.texts[__${lang}__]}"
                                        type="text" aria-label="Text input with dropdown button">
                             </th:block>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="price">[[#{product.price}]]</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="text" th:field="*{price}" class="form-control" id="price" th:placeholder="${product.price}" required="">
                         </div>
                     </div>
 
@@ -105,36 +124,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script>
-
-    /**
-     *
-     * https://www.w3schools.com/js/js_cookies.asp
-     *
-     */
-
-    function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        var expires = "expires="+d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for(var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-</script>
-<script>
     $(function () {
         $(".language-choice").on("change", function () {
             const multiLanguageFor = $(this).data("multi-language-for");
@@ -145,8 +134,7 @@
 
         $(".language-item").on("click", function () {
             const selectedLang = $(this).data("default-lang");
-            setCookie("lang", selectedLang, 365);
-            console.log("default language is set to ", selectedLang);
+            window.location.href = location.origin + location.pathname + '?lang=' + selectedLang;
         })
     })
 </script>

@@ -16,6 +16,8 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true # see https://github.com/pgjdbc/pgjdbc/issues/1102#issuecomment-398036270
+  profiles:
+    active: dev
 
 logging:
   level:
