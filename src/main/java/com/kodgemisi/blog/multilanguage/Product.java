@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * Created on May, 2019
@@ -29,5 +30,7 @@ class Product {
 	@Embedded
 	@AttributeOverride(name = "texts", column = @Column(name = "description", columnDefinition = "jsonb"))
 	private MultiLanguageText description;
+
+	private BigDecimal price;
 
 }

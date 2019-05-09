@@ -6,9 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -29,21 +26,6 @@ public class MultilanguageApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MultilanguageApplication.class, args);
-	}
-
-	@GetMapping
-	public String getProducts(Model model) {
-		model.addAttribute("products", productRepository.findAll());
-		model.addAttribute("product", new Product());
-		model.addAttribute("defaultLanguage", Languages.getDefaultLanguage());
-		model.addAttribute("languages", Languages.values());
-		return "products";
-	}
-
-	@PostMapping
-	public String createProduct(Product product) {
-		productRepository.save(product);
-		return "redirect:/";
 	}
 
 	@Bean
