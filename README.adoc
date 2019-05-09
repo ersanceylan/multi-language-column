@@ -1,0 +1,47 @@
+:toc: left
+:icons: font
+:nofooter:
+:source-highlighter: coderay
+:docinfo: shared,private
+
+= Multi Language Input Texts with Spring Boot and PostgreSQL
+Ersan Ceylan
+
+Implementing dynamic i18n support for user generated content.
+
+image::image1.png[Screenshot 1]
+
+image::image2.png[Screenshot 2]
+
+## Getting Started
+
+_Source code link is in the footer_.
+
+### Setup a database
+
+Tested with following database version on Ubuntu `Ubuntu 18.04.2 LTS`.
+
+```bash
+$ psql -V
+psql (PostgreSQL) 10.7 (Ubuntu 10.7-0ubuntu0.18.04.1)
+```
+
+#### Creating a test database
+
+```bash
+$ sudo -u postgres createuser --interactive --pwprompt demouser
+could not change directory to "/your/current/dir": Permission denied
+Enter password for new role:
+Enter it again:
+Shall the new role be a superuser? (y/n) n
+Shall the new role be allowed to create databases? (y/n) n
+Shall the new role be allowed to create more new roles? (y/n) n
+```
+
+```bash
+$ sudo -u postgres createdb -O demouser demodb
+could not change directory to "/your/current/dir": Permission denied
+```
+
+NOTE: You can safely ignore `could not change directory to ...` messages. You can find the reason for it https://stackoverflow.com/a/38471243/878361[here].
+

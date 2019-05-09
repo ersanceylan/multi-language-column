@@ -5,12 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,17 +18,15 @@ import java.util.Map;
  *
  * @author ersan
  */
-@TypeDefs({
-  @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-})
 @Data
-@NoArgsConstructor
 @Embeddable
+@NoArgsConstructor
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 class MultiLanguageText implements Serializable {
 
 	@Type(type = "jsonb")
 	@Column(columnDefinition = "jsonb")
-	private Map<String, String> texts;
+	private Map<String, String> texts = new HashMap<>();
 
 	MultiLanguageText(Map<String, String> texts) {
 		this.texts = texts;
@@ -41,4 +39,3 @@ class MultiLanguageText implements Serializable {
 	}
 
 }
-
